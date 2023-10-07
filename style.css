@@ -3,6 +3,8 @@
     --primary-font: 'Oswald', sans-serif;
     --secondary-font: 'Raleway', sans-serif;
     --black: #1B1212;
+    --link-hover: grey;
+    --link-transition-time: 0.5s;
 }
 
 body {
@@ -40,29 +42,66 @@ body {
 .nav a {
     text-decoration: none;
     color: white;
-    transition: 0.5s;
+    transition: var(--link-transition-time);
 }
 
 .nav a:hover {
     cursor: pointer;
-    color: grey;
+    color: var(--link-hover);
 }
 
 .footer {
     width: 100%;
-    padding: 10px;
     background-color: var(--black);
+    color: white;
+    padding: 20px 0 20px 0;
 }
 
 .footer ul {
     list-style: none;
+    display: inline-block;
 }
 
 .footer li {
     display: inline;
-    padding: 0 5px 0 5px
+    padding: 0 5px 0 5px;
+    font-family: var(--secondary-font);
 }
 
 .footer a {
     text-decoration: none;
+    color: white;
+    transition: var(--link-transition-time);
+}
+
+.footer a:hover {
+    color: var(--link-hover);
+}
+
+.bottom-nav-section{
+    float: right;
+    margin-right: 30px;
+    margin-top: -65px;
+}
+
+.bottom-nav-section ul {
+    margin-top: 20px;
+}
+
+.bottom-nav-section h1 {
+    margin: 0;
+    text-align: center;
+}
+
+.footer h1 {
+    font-family: var(--primary-font);
+}
+
+.footer-title {
+    margin-left: 20px;
+    width: 50%;
+}
+
+.social {
+    margin-left: 40px;
 }
