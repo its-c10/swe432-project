@@ -5,6 +5,7 @@
     --black: #1B1212;
     --link-hover: grey;
     --link-transition-time: 0.5s;
+    --btn-radius: 10px;
 }
 
 body {
@@ -104,4 +105,133 @@ body {
 
 .social {
     margin-left: 40px;
+}
+
+.media .flex-container {
+    display: flex;
+    background-color: black;
+    border-bottom: solid white 5px; 
+}
+
+.media .flex-container .flex-item {
+    height: 300px;
+    color: white;
+    flex: 1;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.slider {
+    width: 80%;
+    height: 20px;
+    outline: none;
+}
+
+#volume-slider {
+    margin-top: 215px;
+}
+
+#volume-slider:hover {
+    cursor: pointer;
+}
+
+.share-btn{
+    font-size: 15px;
+    padding: 5px 25px 5px 25px;
+    border-radius: var(--btn-radius);
+    border-style: none;
+    outline: none;
+    font-family: var(--primary-font);
+    background-color: white;
+    color: black;
+    margin-left: 20px;
+    margin-top: 20px;
+    transition: 0.5s;
+}
+
+.share-btn:hover {
+    cursor: pointer;
+    opacity: 0.9;
+}
+
+.middle-media {
+    text-align: center;
+}
+
+.middle-media div {
+    margin-top: 80px;
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.middle-media h2 {
+    font-family: var(--primary-font);
+}
+
+.middle-media p {
+    font-family: var(--secondary-font);
+}
+
+.middle-media i {
+    font-size: 25px;
+    margin-right: 50px;
+}
+
+.middle-media button {
+    font-size: 15px;
+    font-family: var(--primary-font);
+    border: none;
+    border-radius: var(--btn-radius);
+    padding: 5px 15px 5px 15px;
+    transition: var(--link-transition-time);
+}
+
+.middle-media button:hover {
+    cursor: pointer;
+}
+
+.middle-media i {
+    transition: var(--link-transition-time);
+    text-align: center;
+}
+
+.middle-media i:hover {
+    cursor: pointer;
+    opacity: 0.9;
+}
+
+.media .flex-container .flex-item:nth-child(3) div{
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+    height: 300px;
+}
+
+#music-pic {
+    width: inherit;
+    height: inherit;
+    border-radius: 10px;
+}
+
+.page-content {
+    background-color: black;
+    margin: 0;
+    padding: 0;
+    color: white;
+    padding: 50px;
+}
+
+.page-content h1 {
+    text-align: center;
+    padding: 10px;
+    font-family: var(--primary-font);
+}
+
+.page-content p {
+    text-align: center;
+    font-family: var(--secondary-font);
+    margin: 0;
 }
