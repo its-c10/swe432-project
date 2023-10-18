@@ -274,3 +274,36 @@ body {
 .share-slider a:hover {
     color: var(--link-hover);
 }
+
+.lyrics-modal {
+    overflow-y: auto;
+    position:absolute;
+    margin-top: 150px;
+    margin-left: 20px;
+    background-color: white;
+    padding: 30px;
+    width: 30%;
+    height: 100px;
+    visibility: hidden;
+}
+/* 
+.lyrics-modal i {
+    float: right;
+    font-size: 20px;
+    transition: var(--link-transition-time);
+}
+
+.lyrics-modal i:hover {
+    color: var(--link-hover);
+    cursor: pointer;
+} */
+
+.lyrics-modal p {
+    font-family: var(--secondary-font);
+    margin-top: 40px;
+}
+
+.lyrics-modal h1 {
+    font-family: var(--primary-font);
+    text-align: center;
+}
