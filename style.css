@@ -235,3 +235,42 @@ body {
     font-family: var(--secondary-font);
     margin: 0;
 }
+
+/* Somehow make this a transition // less clunky */
+.hide-slider {
+    left: -12%;
+}
+
+.share-slider {
+    position: absolute;
+    z-index: 1;
+    width: 10%;
+    background-color: white;
+    padding: 10px 0px 10px 0px; 
+    margin-top: 90px;
+    border-radius: 0 20px 20px 0;
+}
+
+.share-slider ul {
+    list-style: none;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+.share-slider ul li {
+    display: inline;
+    margin-left: 10px;
+    margin-right: 10px;
+    font-size: 20px;
+}
+
+.share-slider a {
+    text-decoration: none;
+    color: black;
+    transition: var(--link-transition-time);
+}
+
+.share-slider a:hover {
+    color: var(--link-hover);
+}
