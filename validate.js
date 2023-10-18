@@ -1,3 +1,11 @@
+window.addEventListener('load', function() {
+    this.document.getElementById('contact-us-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        if(validateContactForm()){
+            this.document.getElementById('contact-us-form').submit();
+        }
+    });
+});
 function validateContactForm() {
 
     let form = document.forms['contact-us'];
