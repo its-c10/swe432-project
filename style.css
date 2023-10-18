@@ -230,7 +230,7 @@ body {
     font-family: var(--primary-font);
 }
 
-.page-content p {
+#main-page-content p {
     text-align: center;
     font-family: var(--secondary-font);
     margin: 0;
@@ -307,3 +307,51 @@ body {
     font-family: var(--primary-font);
     text-align: center;
 }
+
+.contact-form-wrap {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.contact-form-wrap label {
+    font-family: var(--secondary-font);
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    margin-left: 5px;
+}
+
+.contact-form-wrap input {
+    font-family: var(--secondary-font);
+    width: 100%;
+}
+
+.contact-form-wrap form {
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
+.contact-form-wrap input {
+    border-radius: 10px;
+    padding: 10px;
+    outline: none;
+    border: none;
+}
+
+.contact-form-wrap input[type="submit"] {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    margin-top: 15px;
+    background-color: white;
+    transition: 1s;
+}
+
+.contact-form-wrap input[type="submit"]:hover {
+    opacity: 0.85;
+    cursor: pointer;
+}
+ 

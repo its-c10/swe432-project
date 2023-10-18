@@ -5,26 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
+    <script src="reuse.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <title>Radio Station Site</title>
+    <title>Home | Radio Station Site</title>
 </head>
 <body>
-    <div class="nav">
-        <h1>Radio Station Site</h1>
-        <ul>
-            <li>
-                <a href="#">
-                    <i class="bi bi-house-door-fill"></i>
-                </a>
-            </li>
-            <li>
-                <a href="#">Songs</a>
-            </li>
-            <li>
-                <a href="#">Contact Us</a>
-            </li>
-        </ul>
-    </div>
+    <main-nav></main-nav>
     <div class="media">
         <div class="flex-container">
             <div class="flex-item">
@@ -76,43 +62,10 @@
             </div>
         </div>
     </div>
-    <div class="page-content">
+    <div class="page-content" id="main-page-content">
         <h1>About</h1>
         <p>A radio station with the best 2000's rock.</p>
     </div>
-    <div class="footer">
-        <h1 class="footer-title">Radio Station Site</h1>
-        <ul class="social">
-            <li>
-                <a href="#">
-                    <i class="bi bi-facebook"></i>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <i class="bi bi-instagram"></i>
-                </a>
-            </li>
-            <li>
-                <a href="#">
-                    <i class="bi bi-twitter-x"></i>
-                </a>
-            </li>
-        </ul>
-        <div class="bottom-nav-section">
-            <h1>Navigation</h1>
-            <ul>
-                <li>
-                    <a href="#">Home</a>
-                </li>
-                <li>
-                    <a href="#">Songs</a>
-                </li>
-                <li>
-                    <a href="#">Contact Us</a>
-                </li>
-            </ul>
-        </div>
-    </div>
+    <main-footer></main-footer>
 </body>
 </html>
