@@ -27,9 +27,10 @@ currentRadioHost.timesHosted += 1; // modified property
 console.log('Host ' + currentRadioHost.name + ' is on until ' + currentRadioHost.endTime); // accessed property
 
 window.addEventListener('load', function() {
-    document.querySelector('.share-btn').addEventListener('click', () => {
+    this.document.querySelector('.share-btn').addEventListener('click', () => {
         document.querySelector('.share-slider').classList.toggle(HIDE_SHARE_SLIDER_CLASS);
     });
+    
 });
 
 function toggleLyrics () {
