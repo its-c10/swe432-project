@@ -27,7 +27,6 @@ currentRadioHost.endTime = endTime; // added new property
 currentRadioHost.timesHosted += 1; // modified property
 console.log('Host ' + currentRadioHost.name + ' is on until ' + currentRadioHost.endTime); // accessed property
 
-
 /* Upon loading the web page, add an event listener that listens for the clicking of the share button */
 window.addEventListener('load', function() {
     this.document.querySelector('.share-btn').addEventListener('click', () => {

@@ -1,17 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
-    <script src="reuse.js"></script>
-    <script src="validate.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <title>Contact Us | Radio Station Site</title>
+    <%- include('../partials/head') %>
 </head>
 <body>
-    <main-nav></main-nav>
+    <%- include('../partials/nav') %>
     <div class="media">
         <div class="flex-container">
             <div class="flex-item">
@@ -26,7 +19,7 @@
                     <h2>A Beautiful Lie</h2>
                     <p>Thirsty Seconds to Mars</p>
                     <audio controls>
-                        <source src="a beautiful lie.mp3">
+                        <source src="media/a beautiful lie.mp3">
                     </audio>
                     <br><br>
                     <button onClick="toggleLyrics()">Toggle lyrics</button>
@@ -34,7 +27,7 @@
             </div>
             <div class="flex-item">
                 <div style="text-align: center;">
-                    <img src="pic.jpg" id="music-pic">
+                    <img src="media/pic.jpg" id="music-pic">
                 </div>
             </div>
             <div class="share-slider hide-slider">
@@ -63,23 +56,10 @@
             </div>
         </div>
     </div>
-    <div class="page-content">
-        <div class="contact-form-wrap">
-            <h1>Contact Us</h1>
-            <form method="post" name="contact-us" id="contact-us-form">
-                <label>Email</label>
-                <!-- Could use type email, but for this purposes of javascript validation i will use text-->
-                <input type="text" name="email" placeholder="Enter your email..." required>
-                <label>First Name</label>
-                <input type="text" name="first-name" placeholder="Enter your first name...">
-                <label>Last Name</label>
-                <input type="text" name="last-name" placeholder="Enter your last name...">
-                <label>Message</label>
-                <input type="text" name="message" placeholder="What would you like to tell us?" required>
-                <input type="submit" value="Send">
-            </form>
-        </div>
+    <div class="page-content" id="main-page-content">
+        <h1>About</h1>
+        <p>A radio station with the best 2000's rock.</p>
     </div>
-    <main-footer></main-footer>
+    <%- include('../partials/footer') %>
 </body>
 </html>
