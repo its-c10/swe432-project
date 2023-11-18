@@ -41,6 +41,9 @@ function setupExpress() {
     app.set('view engine', 'ejs');
     app.use(express.static(__dirname + '/public'));
 
+    app.use(express.urlencoded({extended: 'false'}))
+    app.use(express.json())
+
     app.get('/', (req, res) => {
         res.render('pages/index', {
             title: 'Home',
@@ -60,6 +63,26 @@ function setupExpress() {
         let passedId = req.params.id;
         Song.find({id: passedId}).then((foundSong) => {
             res.render('pages/i-song', {song: foundSong[0], title: foundSong[0].title});
+        });
+    });
+    app.post('/songs/make-comment/:id', (req, res) => {
+        console.log('in here');
+        let specifiedId = req.params.id;
+        let cmmenter = req.body.commenter;
+        let cmmnt = req.body.comment;
+        Song.find({id: specifiedId}).then((foundSong) => {
+            let s = foundSong[0];
+            console.log(s.title);
+            let comms = s.comments;
+            comms.push({comment: cmmnt, commenter: cmmenter});
+            console.log('COMMS: ' + comms);
+            Song.updateOne({id: specifiedId}, {comments: comms}).then((err, docs) => {
+                if(err) {
+                    console.log(err);
+                }else {
+                    console.log('Updated docs: ' + docs);
+                }
+            });
         });
     });
     app.listen(8080, () => {

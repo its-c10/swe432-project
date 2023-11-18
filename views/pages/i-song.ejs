@@ -6,6 +6,22 @@
         p {
             padding-top: 5px;
         }
+        form {
+            width: 30%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        h2 {
+            font-family: var(--primary-font);
+        }
+        input {
+            width: 100%;
+            border: none;
+            border-radius: 5px; 
+            font-size: 18px;
+            padding: 5px;
+            font-family: var(--secondary-font);
+        }
     </style>
 </head>
 <body>
@@ -20,6 +36,20 @@
         <% for(let i = 0; i < song.comments.length; i++) { %>
             <p> <%= song.comments[i].commenter %> | <%= song.comments[i].comment %> </p>
         <% } %>
+        <div style="text-align: center">
+            <% if(song.comments.length == 0) { %>
+                <h2>Be the first to comment</h2>
+                <% } else { %>
+                <h2>Let us know what you think!</h2>
+            <% } %>
+            <form action="/songs/make-comment/<%= song.id %>" method="post">
+                <input type="text" name="commenter" id="commenter" placeholder="Enter your name...">
+                <br><br>
+                <input type="text" name="comment" id="comment" placeholder="What would you like to say?">
+                <br><br>
+                <input type="submit" style="width: 30%;" value="Submit">
+            </form>
+        </div>
     </div>
     <%- include('../partials/footer') %>
 </body>
