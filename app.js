@@ -10,8 +10,8 @@ initSongs();
 setupExpress();
 
 const songs = [
-    new Song({id: 1, title: 'Testing title', yearReleased: 11, artist: 'Artist'}),
-    new Song({id: 2, title: 'Testing 2', yearReleased: 12345, artist: 'Yo'})
+    new Song({id: 1, title: 'Testing title', yearReleased: 11, artist: 'Artist', comments: [{commenter: 'Caleb', comment: 'My comment FOR ID 1'}]}),
+    new Song({id: 2, title: 'Testing 2', yearReleased: 12345, artist: 'Yo', comments: [{commenter: 'Caleb', comment: 'My comment'}]})
 ];
 
 function setupMongoose() {
@@ -23,7 +23,6 @@ function setupMongoose() {
 }
 
 function initSongs() {
-    console.log('');
     db.once('open', () => {
         songs.forEach((song) => {
             Song.find({title: song.title}).then((res) => {
@@ -60,7 +59,7 @@ function setupExpress() {
     app.get('/songs/:id', (req, res) => {
         let passedId = req.params.id;
         Song.find({id: passedId}).then((foundSong) => {
-            res.render('pages/songs', {title: 'Song', songs: foundSong});
+            res.render('pages/i-song', {song: foundSong[0], title: foundSong[0].title});
         });
     });
     app.listen(8080, () => {
