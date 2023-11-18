@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
 const songModel = require('./models/song');
+const djSchema = require('./models/dj')
 
 setupMongoose();
 setupExpress();
@@ -11,10 +12,6 @@ function setupMongoose() {
     mongoose.connection.once('open', () => {
         console.log('Connected to mongo');
     });
-}
-
-function setupSchemas() {
-
 }
 
 function setupExpress() {
