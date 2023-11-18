@@ -1,19 +1,42 @@
 const express = require('express');
-const { MongoClient, ServerApiVersion } = require('mongodb');
 const mongoose = require('mongoose');
 const app = express();
-const uri = "mongodb+srv://calebjaowens:2uoIa1DYyeCxce2g@swe432-project.2n5dvs0.mongodb.net/?retryWrites=true&w=majority";
+const songModel = require('./models/song');
 
-mongoose.connect(uri);
+setupMongoose();
+setupExpress();
 
-const db = mongoose.connection;
+function setupMongoose() {
+    mongoose.connect("mongodb+srv://calebjaowens:2uoIa1DYyeCxce2g@swe432-project.2n5dvs0.mongodb.net/?retryWrites=true&w=majority");
+    mongoose.connection.once('open', () => {
+        console.log('Connected to mongo');
+    });
+}
 
-db.once('open', () => {
-    console.log('Connected to mongo');
-});
+function setupSchemas() {
 
-app.set('view engine', 'ejs');
-app.use(express.static(__dirname + '/public'));
+}
+
+function setupExpress() {
+
+    app.set('view engine', 'ejs');
+    app.use(express.static(__dirname + '/public'));
+
+    app.get('/', (req, res) => {
+        res.render('pages/index', {
+            title: 'Home',
+        });
+    });
+    app.get('/contact-us', (req, res) => {
+        res.render('pages/contact-us', {
+            title: 'Contact Us',
+        });
+    });
+    app.listen(8080, () => {
+        console.log('Listening on port 8080');
+    });
+
+}
 
 let allRadioHosts = [
     {
@@ -40,18 +63,3 @@ endTime.setHours(endTime.getHours() + 1);
 currentRadioHost.endTime = endTime; // added new property
 currentRadioHost.timesHosted += 1; // modified property
 
-app.get('/', (req, res) => {
-    res.render('pages/index', {
-        title: 'Home',
-    });
-});
-
-app.get('/contact-us', (req, res) => {
-    res.render('pages/contact-us', {
-        title: 'Contact Us',
-    });
-});
-
-app.listen(8080, () => {
-    console.log('Listening on port 8080');
-});
