@@ -8,9 +8,12 @@
     <%- include('../partials/media') %>
     <div class="page-content" id="main-page-content">
         <h1>Songs</h1>
-        <% songs.forEach((song)=>{ %>
-            <a style="padding: 5px 0px 5px 0px;" href="songs/<%= song.id %>"><%= song.title %></a>
-        <% }) %>
+        <div style="text-align: center">
+            <% songs.forEach((song)=>{ %>
+                <a href="songs/<%= song.id %>"><%= song.title %></a>
+                <br>
+            <% }) %>
+        </div>
     </div>
     <%- include('../partials/footer') %>
 </body>
