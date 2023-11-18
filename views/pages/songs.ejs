@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head') %>
+</head>
+<body>
+    <%- include('../partials/nav') %>
+    <%- include('../partials/media') %>
+    <div class="page-content" id="main-page-content">
+        <h1>Songs</h1>
+        <% songs.forEach((song)=>{ %>
+            <a style="padding: 5px 0px 5px 0px;" href="songs/<%= song.id %>"><%= song.title %></a>
+        <% }) %>
+    </div>
+    <%- include('../partials/footer') %>
+</body>
+</html>

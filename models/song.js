@@ -6,6 +6,7 @@ const commentSchema = new mongoose.Schema({
 });
 
 const songSchema = new mongoose.Schema({
+    id: Number,
     title: String,
     yearReleased: Number,
     artist: String,
@@ -13,4 +14,4 @@ const songSchema = new mongoose.Schema({
     comments: [commentSchema]
 });
 
-module.exports = mongoose.model("song", songSchema);
+module.exports = mongoose.model("Song", songSchema, "song");

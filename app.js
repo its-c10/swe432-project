@@ -1,16 +1,39 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const app = express();
-const songModel = require('./models/song');
-const djSchema = require('./models/dj')
+const Song = require('./models/song');
+const Dj = require('./models/dj');
+let db = null;
 
 setupMongoose();
+initSongs();
 setupExpress();
+
+const songs = [
+    new Song({id: 1, title: 'Testing title', yearReleased: 11, artist: 'Artist'}),
+    new Song({id: 2, title: 'Testing 2', yearReleased: 12345, artist: 'Yo'})
+];
 
 function setupMongoose() {
     mongoose.connect("mongodb+srv://calebjaowens:2uoIa1DYyeCxce2g@swe432-project.2n5dvs0.mongodb.net/?retryWrites=true&w=majority");
-    mongoose.connection.once('open', () => {
+    db = mongoose.connection;
+    db.once('open', () => {
         console.log('Connected to mongo');
+    });
+}
+
+function initSongs() {
+    console.log('');
+    db.once('open', () => {
+        songs.forEach((song) => {
+            Song.find({title: song.title}).then((res) => {
+                // not a saved song/document
+                if(res == '') {
+                    console.log('Saved song: ' + song.title);
+                    song.save();
+                }
+            });
+        });
     });
 }
 
@@ -29,10 +52,20 @@ function setupExpress() {
             title: 'Contact Us',
         });
     });
+    app.get('/songs', (req, res) => {
+        Song.find({}).then((data) => {
+            res.render('pages/songs', {title: 'Songs', songs: data});
+        });
+    });
+    app.get('/songs/:id', (req, res) => {
+        let passedId = req.params.id;
+        Song.find({id: passedId}).then((foundSong) => {
+            res.render('pages/songs', {title: 'Song', songs: foundSong});
+        });
+    });
     app.listen(8080, () => {
         console.log('Listening on port 8080');
     });
-
 }
 
 let allRadioHosts = [

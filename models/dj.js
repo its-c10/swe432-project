@@ -9,4 +9,4 @@ const djSchema = new mongoose.Schema({
     timesHosted: Number
 });
 
-module.exports = mongoose.model("dj", djSchema);
+module.exports = mongoose.model("Dj", djSchema, "djs");
