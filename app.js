@@ -10,8 +10,11 @@ initSongs();
 setupExpress();
 
 const songs = [
-    new Song({id: 1, title: 'Testing title', yearReleased: 11, artist: 'Artist', comments: [{commenter: 'Caleb', comment: 'My comment FOR ID 1'}]}),
-    new Song({id: 2, title: 'Testing 2', yearReleased: 12345, artist: 'Yo', comments: [{commenter: 'Caleb', comment: 'My comment'}]})
+    new Song({id: 1, title: 'A Beautiful Lie', yearReleased: 2005, artist: 'Thirty Seconds to Mars'}),
+    new Song({id: 2, title: 'Break', yearReleased: 2009, artist: 'Three Days Grace'}),
+    new Song({id: 3, title: 'American Idiot', yearReleased: 2004, artist: 'Green Day'}),
+    new Song({id: 4, title: 'Hated You from Hello', yearReleased: 2011, artist: 'Downplay'}),
+    new Song({id: 5, title: 'The Diary of Jane', yearReleased: 2004, artist: 'Breaking Benjamin'}),
 ];
 
 function setupMongoose() {
@@ -66,22 +69,20 @@ function setupExpress() {
         });
     });
     app.post('/songs/make-comment/:id', (req, res) => {
-        console.log('in here');
         let specifiedId = req.params.id;
         let cmmenter = req.body.commenter;
         let cmmnt = req.body.comment;
         Song.find({id: specifiedId}).then((foundSong) => {
             let s = foundSong[0];
-            console.log(s.title);
             let comms = s.comments;
             comms.push({comment: cmmnt, commenter: cmmenter});
-            console.log('COMMS: ' + comms);
             Song.updateOne({id: specifiedId}, {comments: comms}).then((err, docs) => {
                 if(err) {
                     console.log(err);
                 }else {
                     console.log('Updated docs: ' + docs);
                 }
+                res.redirect('back');
             });
         });
     });
