@@ -100,11 +100,11 @@ function setupExpress() {
         if(req.body.login_btn) {
             User.find({username: formUsername, password: formPass}).then((foundUser) => {
                 if(foundUser.length == 0) { // No user with username and password (Could just be invalid password)
-                    User.find({user: formUsername}).then((foundUser2) => {
+                    User.find({username: formUsername}).then((foundUser2) => {
                         if(foundUser2.length == 0) { // There is no user with this username
-                            res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: 'No user found'});
+                            res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: 'No user found', session: req.session});
                         }else { // There is a valid user with this username, but they just had the password incorrect.
-                            res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: 'Incorrect password'});
+                            res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: 'Incorrect password', session: req.session});
                         }
                     });
                 }else { // Valid login
@@ -116,11 +116,11 @@ function setupExpress() {
         }else if (req.body.sign_up_btn){
             User.find({username: formUsername}).then((foundUser) => {
                 if(foundUser.length != 0) { // User found with this username. Cannot register.
-                    res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: 'User found'});
+                    res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: 'User found', session: req.session});
                 } else {
                     console.log('Username: ' + formUsername);
                     new User({id: formUsername, username: formUsername, password: formPass, is_dj: false}).save();
-                    res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: 'User created. You may login.'});
+                    res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: 'User created. You may login.', session: req.session});
                 }
             });
         }
