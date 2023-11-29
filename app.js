@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const app = express();
 const Song = require('./models/song');
 const Dj = require('./models/dj');
+const User = require('./models/user.js');
 let db = null;
 
 setupMongoose();
@@ -67,6 +68,41 @@ function setupExpress() {
         Song.find({id: passedId}).then((foundSong) => {
             res.render('pages/i-song', {song: foundSong[0], title: foundSong[0].title});
         });
+    });
+    app.get('/login-sign-up', (req,res) => {
+        res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: ''});
+    });
+    app.post('/login-sign-up', (req, res) => {
+        var formEmail = req.body.email;
+        var formPass = req.body.password;
+        if(req.body.login_btn) {
+            User.find({email: formEmail}).then((foundUser) => {
+                if(foundUser.length == 0) { // No user found
+                    res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: 'No User Found'});
+                }else {
+
+                }
+                if(!foundUser) {
+                    console.log('No user found');
+                }else {
+                    console.log('' + foundUser.length);
+                }
+            });
+        }else if (req.body.sign_up_btn){
+            User.find({email: formEmail}).then((foundUser) => {
+                if(foundUser.length != 0) { // User found with this email. Cannot register.
+                    res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: 'User found'});
+                } else {
+                    let user = new User({id: formEmail, email: formEmail, password: formPass});
+                    user.save();
+                    console.log('Created a new user');
+                    res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: 'User created. You may login.'});
+                }
+            });
+        }
+    });
+    app.get('/logout', (req, res) => {
+
     });
     app.post('/songs/make-comment/:id', (req, res) => {
         let specifiedId = req.params.id;

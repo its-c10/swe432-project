@@ -340,6 +340,10 @@ body {
     border: none;
 }
 
+.contact-form-wrap input:focus {
+    outline: none;
+}
+
 .contact-form-wrap input[type="submit"] {
     width: 50%;
     margin-left: auto;
@@ -355,3 +359,40 @@ body {
     cursor: pointer;
 }
  
+.login-sign-up-wrap {
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+.login-sign-up-wrap input[type="email"], .login-sign-up-wrap input[type="password"] {
+    padding: 5px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    width: 20%;
+}
+
+.login-sign-up-wrap input {
+    font-family: var(--secondary-font);
+}
+
+.login-sign-up-wrap input:focus {
+    outline: none;
+}
+
+.login-sign-up-wrap input[type="submit"] {
+    padding: 10px;
+    border-radius: var(--btn-radius);
+    border: none;
+}
+
+.login-sign-up-wrap input[type="submit"]:hover {
+    opacity: .8;
+    transition: var(--link-transition-time);
+    cursor: pointer;
+}
+
+.login-sign-up-wrap .feedback {
+    padding-top: 10px;
+    font-family: var(--secondary-font);
+}

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head') %>
+</head>
+<body>
+    <%- include('../partials/nav') %>
+    <%- include('../partials/media') %>
+    <div class="page-content" id="main-page-content">
+        <div class="login-sign-up-wrap">
+            <form action="/login-sign-up" method="POST">
+                <input type="email" placeholder="Enter your email..." class="login-email" name="email"><br>
+                <input type="password" placeholder="Enter your password..." class="login-password" name="password"><br>
+                <input type="submit" value="Sign-Up" name="sign_up_btn" value="yes">
+                <input type="submit" value="Login" name="login_btn" values="yes">
+                <% if(feedback.length > 0){ %>
+                    <p class="feedback" style="display: block;"><%= feedback %></p>
+                <% }else { %>
+                    <p class="feedback" style="display: none;">No feedback</p>
+                <% } %>
+            </form>
+        </div>
+    </div>
+    <%- include('../partials/footer') %>
+</body>
+</html>
