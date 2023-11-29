@@ -365,7 +365,7 @@ body {
     text-align: center;
 }
 
-.login-sign-up-wrap input[type="email"], .login-sign-up-wrap input[type="password"] {
+.login-sign-up-wrap input[type="text"], .login-sign-up-wrap input[type="password"] {
     padding: 5px;
     margin-bottom: 10px;
     border-radius: 5px;

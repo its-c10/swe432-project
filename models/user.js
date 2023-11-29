@@ -7,11 +7,11 @@ const playlistSchema = new mongoose.Schema({
 })
 
 const userSchema = new mongoose.Schema({
-    email: String,
     password: String,
+    username: String,
     favorite_song: String,
     is_dj: Boolean,
     playlists: [playlistSchema]
 });
 
-module.exports = mongoose.model("user", userSchema, "users");
+module.exports = mongoose.model("User", userSchema, "users");

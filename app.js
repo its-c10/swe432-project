@@ -1,10 +1,14 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const cookieParser = require("cookie-parser");
+const sessions = require('express-session');
+
 const app = express();
 const Song = require('./models/song');
 const Dj = require('./models/dj');
 const User = require('./models/user.js');
 let db = null;
+let session;
 
 setupMongoose();
 initSongs();
@@ -45,64 +49,90 @@ function setupExpress() {
     app.set('view engine', 'ejs');
     app.use(express.static(__dirname + '/public'));
 
-    app.use(express.urlencoded({extended: 'false'}))
-    app.use(express.json())
+    app.use(express.urlencoded({extended: 'true'}));
+    app.use(express.json());
+
+    app.use(cookieParser());
+
+    app.use(sessions({
+        secret: "Z5okaS8bSwN5eLmVXg^zGc&5ApS2pM",
+        saveUninitialized: true,
+        cookie: { maxAge: (1000*60*60*24) }, // 1 day
+        resave: false
+    }));
 
     app.get('/', (req, res) => {
         res.render('pages/index', {
             title: 'Home',
+            session: req.session,
         });
     });
     app.get('/contact-us', (req, res) => {
         res.render('pages/contact-us', {
             title: 'Contact Us',
+            session: req.session,
         });
     });
     app.get('/songs', (req, res) => {
         Song.find({}).then((data) => {
-            res.render('pages/songs', {title: 'Songs', songs: data});
+            res.render('pages/songs', {title: 'Songs', songs: data, session: req.session});
         });
     });
     app.get('/songs/:id', (req, res) => {
         let passedId = req.params.id;
         Song.find({id: passedId}).then((foundSong) => {
-            res.render('pages/i-song', {song: foundSong[0], title: foundSong[0].title});
+            res.render('pages/i-song', {song: foundSong[0], title: foundSong[0].title, session: req.session,});
         });
     });
     app.get('/login-sign-up', (req,res) => {
-        res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: ''});
+        if(req.session.userid) {
+            res.render('pages/index', {
+                title: 'Home',
+                session: req.session,
+            });
+        }else {
+            res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: '', session: req.session});
+        }
     });
     app.post('/login-sign-up', (req, res) => {
-        var formEmail = req.body.email;
+        var formUsername = req.body.username;
         var formPass = req.body.password;
         if(req.body.login_btn) {
-            User.find({email: formEmail}).then((foundUser) => {
-                if(foundUser.length == 0) { // No user found
-                    res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: 'No User Found'});
-                }else {
-
-                }
-                if(!foundUser) {
-                    console.log('No user found');
-                }else {
-                    console.log('' + foundUser.length);
+            User.find({username: formUsername, password: formPass}).then((foundUser) => {
+                if(foundUser.length == 0) { // No user with username and password (Could just be invalid password)
+                    User.find({user: formUsername}).then((foundUser2) => {
+                        if(foundUser2.length == 0) { // There is no user with this username
+                            res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: 'No user found'});
+                        }else { // There is a valid user with this username, but they just had the password incorrect.
+                            res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: 'Incorrect password'});
+                        }
+                    });
+                }else { // Valid login
+                    session = req.session;
+                    session.userid = formUsername;
+                    res.render('pages/index', {title: 'Home', session: req.session});
                 }
             });
         }else if (req.body.sign_up_btn){
-            User.find({email: formEmail}).then((foundUser) => {
-                if(foundUser.length != 0) { // User found with this email. Cannot register.
+            User.find({username: formUsername}).then((foundUser) => {
+                if(foundUser.length != 0) { // User found with this username. Cannot register.
                     res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: 'User found'});
                 } else {
-                    let user = new User({id: formEmail, email: formEmail, password: formPass});
-                    user.save();
-                    console.log('Created a new user');
+                    console.log('Username: ' + formUsername);
+                    new User({id: formUsername, username: formUsername, password: formPass, is_dj: false}).save();
                     res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: 'User created. You may login.'});
                 }
             });
         }
     });
     app.get('/logout', (req, res) => {
-
+        req.session.destroy((err) => {
+            if(err) {
+                console.log(err);
+            }else {
+                res.redirect('/');
+            }
+        });
     });
     app.post('/songs/make-comment/:id', (req, res) => {
         let specifiedId = req.params.id;
