@@ -8,7 +8,7 @@ const Song = require('./models/song');
 const Dj = require('./models/dj');
 const User = require('./models/user.js');
 let db = null;
-let session;
+let storedSession;
 let songIndex = 0;
 
 setupMongoose();
@@ -75,10 +75,13 @@ function setupExpress() {
         }
         res.send({'songIndex': songIndex});
     });
+    app.get('/getSongIndex', (req,res) => {
+        res.send({'songIndex': songIndex});
+    });
     app.get('/', (req, res) => {
         res.render('pages/index', {
             title: 'Home',
-            session: session,
+            session: storedSession,
             songList: JSON.stringify(songs),
             currIndexSong: songIndex
         });
@@ -86,28 +89,27 @@ function setupExpress() {
     app.get('/contact-us', (req, res) => {
         res.render('pages/contact-us', {
             title: 'Contact Us',
-            session: session,
+            session: storedSession,
+            songList: JSON.stringify(songs),
+            currIndexSong: songIndex
         });
     });
     app.get('/songs', (req, res) => {
         Song.find({}).then((data) => {
-            res.render('pages/songs', {title: 'Songs', songs: data, session: session});
+            res.render('pages/songs', {title: 'Songs', songs: data, session: storedSession, songList: JSON.stringify(songs), currIndexSong: songIndex});
         });
     });
     app.get('/songs/:id', (req, res) => {
         let passedId = req.params.id;
         Song.find({id: passedId}).then((foundSong) => {
-            res.render('pages/i-song', {song: foundSong[0], title: foundSong[0].title, session: session,});
+            res.render('pages/i-song', {song: foundSong[0], title: foundSong[0].title, session: storedSession, songList: JSON.stringify(songs), currIndexSong: songIndex});
         });
     });
     app.get('/login-sign-up', (req,res) => {
-        if(session.userid) {
-            res.render('pages/index', {
-                title: 'Home',
-                session: session,
-            });
+        if(storedSession && storedSession.userid) {
+            res.render('pages/index', {title: 'Home', session: storedSession, songList: JSON.stringify(songs), currIndexSong: songIndex});
         }else {
-            res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: '', session: session});
+            res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: '', session: storedSession, songList: JSON.stringify(songs), currIndexSong: songIndex});
         }
     });
     app.post('/login-sign-up', (req, res) => {
@@ -118,37 +120,38 @@ function setupExpress() {
                 if(foundUser.length == 0) { // No user with username and password (Could just be invalid password)
                     User.find({username: formUsername}).then((foundUser2) => {
                         if(foundUser2.length == 0) { // There is no user with this username
-                            res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: 'No user found', session: session});
+                            res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: 'No user found', session: storedSession, songList: JSON.stringify(songs), currIndexSong: songIndex});
                         }else { // There is a valid user with this username, but they just had the password incorrect.
-                            res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: 'Incorrect password', session: session});
+                            res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: 'Incorrect password', session: storedSession, songList: JSON.stringify(songs), currIndexSong: songIndex});
                         }
                     });
                 }else { // Valid login
-                    session = session;
-                    session.userid = formUsername;
-                    res.render('pages/index', {title: 'Home', session: session});
+                    storedSession = req.session;
+                    storedSession.userid = formUsername;
+                    res.render('pages/index', {title: 'Home', session: storedSession, songList: JSON.stringify(songs), currIndexSong: songIndex});
                 }
             });
         }else if (req.body.sign_up_btn){
             User.find({username: formUsername}).then((foundUser) => {
                 if(foundUser.length != 0) { // User found with this username. Cannot register.
-                    res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: 'User found', session: session});
+                    res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: 'User found', session: storedSession, songList: JSON.stringify(songs), currIndexSong: songIndex});
                 } else {
                     console.log('Username: ' + formUsername);
                     new User({id: formUsername, username: formUsername, password: formPass, is_dj: false}).save();
-                    res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: 'User created. You may login.', session: session});
+                    res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: 'User created. You may login.', session: storedSession, songList: JSON.stringify(songs), currIndexSong: songIndex});
                 }
             });
         }
     });
     app.get('/logout', (req, res) => {
-        session.destroy((err) => {
+        storedSession.destroy((err) => {
             if(err) {
                 console.log(err);
             }else {
                 res.redirect('/');
             }
         });
+        storedSession = null;
     });
     app.post('/songs/make-comment/:id', (req, res) => {
         let specifiedId = req.params.id;

@@ -15,6 +15,10 @@ window.addEventListener('load', function() {
         audio.currentTime = currTime;
     }
 
+    fetch('/getSongIndex', {method: 'GET'})
+        .then(response => response.json())
+        .then(data => generateNextUpSongs(data.songIndex));
+
 });
 
 window.addEventListener('beforeunload', function() {
@@ -42,6 +46,26 @@ function toggleLyrics () {
     }
 }
 
+function generateNextUpSongs(currSongIndex) {
+
+    let songDataStr = document.getElementById("song-data").textContent;
+    let json = JSON.parse(songDataStr);
+    let nextSongsDiv = $("#next-songs");
+    nextSongsDiv.html('');
+
+    let nextIndex = currSongIndex+1;
+    for(let i = 0; i < 3; i++) {
+        if(nextIndex+i >= json.length) {
+            nextIndex = 0;
+        }
+        console.log(nextIndex + i);
+        let path = `/songs/${json[nextIndex+i].id}`;
+        let element = `<a href=${path}>${json[nextIndex+i].title + ' by ' + json[nextIndex+i].artist}</a>${i == 0 ? ' (Next)' : ''}<br>`;
+        nextSongsDiv.append(element);
+    }
+
+}
+
 function changeSong() {
 
     let songDataStr = document.getElementById("song-data").textContent;
@@ -57,7 +81,7 @@ function changeSong() {
         .then(data => {
 
             let nextSongIndex = data.songIndex;
-            console.log("Song index: " + nextSongIndex);
+            generateNextUpSongs(nextSongIndex);
             let nextSong = json[nextSongIndex];
             let pathAudio = 'media/' + nextSong.title.toLowerCase().split(' ').join('_') + ".mp3";
             let pathImg = 'media/' + nextSong.title.toLowerCase().split(' ').join('_') + ".jpg";

@@ -211,7 +211,7 @@ body {
 }
 
 #music-pic {
-    width: inherit;
+    width: 60%;
     height: inherit;
     border-radius: 10px;
 }
@@ -395,4 +395,18 @@ body {
 .login-sign-up-wrap .feedback {
     padding-top: 10px;
     font-family: var(--secondary-font);
+}
+
+#next-songs-section {
+    flex: 0 0 auto;
+    width: 20%;
+    text-align: center;
+}
+
+#next-songs-section h2 {
+    font-family: var(--primary-font);
+}
+
+#share-section {
+    flex: 0;
 }

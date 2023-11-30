@@ -1,12 +1,16 @@
 <div id="song-data" style="display: none"><%= songList %></div> <!-- extra data that is never shown to client -->
 <div class="media">
     <div class="flex-container">
-        <div class="flex-item">
+        <div class="flex-item" id="share-section">
             <button class="share-btn">Share</button>
             <br>
             <!-- <div style="text-align: center;">
                 <input type="range" min="1" max="100" value="50" class="slider" id="volume-slider">
             </div> -->
+        </div>
+        <div class="flex-item" id="next-songs-section">
+            <h2>Next 3 Songs</h2>
+            <div id="next-songs"></div>
         </div>
         <div class="flex-item middle-media" id="middle-media">
             <div>
@@ -20,10 +24,11 @@
             </div>
         </div>
         <div class="flex-item">
-            <div style="text-align: center;">
+            <div style="text-align: center;width: 90%; height: 100%">
                 <img src="<%= "media/" + JSON.parse(songList)[currIndexSong].title.toLowerCase().split(' ').join('_') + ".jpg" %>" id="music-pic">
             </div>
         </div>
+       
         <div class="share-slider hide-slider">
             <ul>
                 <li>
