@@ -19,5 +19,10 @@
                 <a href="../logout">Logout</a>
             <% } %>
         </li>
+        <% if(session && session.userid && session.is_dj) { %>
+            <li>
+                <a href="../dj-dashboard">DJ Dashboard</a>
+            </li>
+        <% } %>
     </ul>
 </div>

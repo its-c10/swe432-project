@@ -410,3 +410,18 @@ body {
 #share-section {
     flex: 0;
 }
+
+#remove-btn {
+    font-family: var(--secondary-font);
+    outline: none;
+    border-radius: 5px;
+    background-color: white;
+    border: none;
+    padding: 5px;
+}
+
+#remove-btn:hover {
+    transition: var(--link-transition-time);
+    opacity: 0.8;
+    cursor: pointer;
+}

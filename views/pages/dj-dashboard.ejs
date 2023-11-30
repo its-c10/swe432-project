@@ -1,0 +1,28 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <%- include('../partials/head') %>
+    <style>
+        p {
+            font-family: var(--secondary-font);
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div id="song-data" style="display: none"><%= songList %></div> <!-- extra data that is never shown to client -->
+    <div id="song-data-original" style="display: none"><%= originalList %></div> <!-- extra data that is never shown to client -->
+    <%- include('../partials/nav') %>
+    <div class="page-content">
+        <div id="curr-list" style="text-align: center;">
+            <h2 style="font-family: var(--primary-font)">Current Songs Being Played</h2>
+            <div id="inner-curr-list"></div>
+        </div>
+        <!-- <div id="all-songs">
+            <h2 style="text-align: center; font-family: var(--primary-font)">All Songs</h2>
+        </div> -->
+    </div>
+    <%- include('../partials/footer') %>
+</body>
+</html>

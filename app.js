@@ -29,6 +29,8 @@ const songs = [
     new Song({id: 11, title: 'Savior', yearReleased: 2005, artist: 'Rise Against'}),
 ];
 
+let currPlaying = songs.slice();
+
 function setupMongoose() {
     mongoose.connect("mongodb+srv://calebjaowens:2uoIa1DYyeCxce2g@swe432-project.2n5dvs0.mongodb.net/?retryWrites=true&w=majority");
     db = mongoose.connection;
@@ -78,11 +80,30 @@ function setupExpress() {
     app.get('/getSongIndex', (req,res) => {
         res.send({'songIndex': songIndex});
     });
+    app.get('/getCurrSongs', (req, res) => {
+        res.send({songs: JSON.stringify(currPlaying)});
+    });
+    app.get('/removeSong/:id', (req, res) => {
+        let passedId = req.params.id;
+        currPlaying = currPlaying.filter((item) => {
+            return item.id !== passedId;
+        });
+        res.redirect('back');
+    });
+    app.get('/dj-dashboard', (req, res) => {
+        res.render('pages/dj-dashboard', {
+            title: 'DJ Dashboard',
+            session: storedSession,
+            songList: JSON.stringify(currPlaying),
+            originalList: JSON.stringify(songs),
+            currIndexSong: songIndex
+        });
+    });
     app.get('/', (req, res) => {
         res.render('pages/index', {
             title: 'Home',
             session: storedSession,
-            songList: JSON.stringify(songs),
+            songList: JSON.stringify(currPlaying),
             currIndexSong: songIndex
         });
     });
@@ -90,26 +111,26 @@ function setupExpress() {
         res.render('pages/contact-us', {
             title: 'Contact Us',
             session: storedSession,
-            songList: JSON.stringify(songs),
+            songList: JSON.stringify(currPlaying),
             currIndexSong: songIndex
         });
     });
     app.get('/songs', (req, res) => {
         Song.find({}).then((data) => {
-            res.render('pages/songs', {title: 'Songs', songs: data, session: storedSession, songList: JSON.stringify(songs), currIndexSong: songIndex});
+            res.render('pages/songs', {title: 'Songs', songs: data, session: storedSession, songList: JSON.stringify(currPlaying), currIndexSong: songIndex});
         });
     });
     app.get('/songs/:id', (req, res) => {
         let passedId = req.params.id;
         Song.find({id: passedId}).then((foundSong) => {
-            res.render('pages/i-song', {song: foundSong[0], title: foundSong[0].title, session: storedSession, songList: JSON.stringify(songs), currIndexSong: songIndex});
+            res.render('pages/i-song', {song: foundSong[0], title: foundSong[0].title, session: storedSession, songList: JSON.stringify(currPlaying), currIndexSong: songIndex});
         });
     });
     app.get('/login-sign-up', (req,res) => {
         if(storedSession && storedSession.userid) {
-            res.render('pages/index', {title: 'Home', session: storedSession, songList: JSON.stringify(songs), currIndexSong: songIndex});
+            res.render('pages/index', {title: 'Home', session: storedSession, songList: JSON.stringify(currPlaying), currIndexSong: songIndex});
         }else {
-            res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: '', session: storedSession, songList: JSON.stringify(songs), currIndexSong: songIndex});
+            res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: '', session: storedSession, songList: JSON.stringify(currPlaying), currIndexSong: songIndex});
         }
     });
     app.post('/login-sign-up', (req, res) => {
@@ -120,25 +141,26 @@ function setupExpress() {
                 if(foundUser.length == 0) { // No user with username and password (Could just be invalid password)
                     User.find({username: formUsername}).then((foundUser2) => {
                         if(foundUser2.length == 0) { // There is no user with this username
-                            res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: 'No user found', session: storedSession, songList: JSON.stringify(songs), currIndexSong: songIndex});
+                            res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: 'No user found', session: storedSession, songList: JSON.stringify(currPlaying), currIndexSong: songIndex});
                         }else { // There is a valid user with this username, but they just had the password incorrect.
-                            res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: 'Incorrect password', session: storedSession, songList: JSON.stringify(songs), currIndexSong: songIndex});
+                            res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: 'Incorrect password', session: storedSession, songList: JSON.stringify(currPlaying), currIndexSong: songIndex});
                         }
                     });
                 }else { // Valid login
                     storedSession = req.session;
                     storedSession.userid = formUsername;
-                    res.render('pages/index', {title: 'Home', session: storedSession, songList: JSON.stringify(songs), currIndexSong: songIndex});
+                    storedSession.is_dj = foundUser[0].is_dj;
+                    res.render('pages/index', {title: 'Home', session: storedSession, songList: JSON.stringify(currPlaying), currIndexSong: songIndex});
                 }
             });
         }else if (req.body.sign_up_btn){
             User.find({username: formUsername}).then((foundUser) => {
                 if(foundUser.length != 0) { // User found with this username. Cannot register.
-                    res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: 'User found', session: storedSession, songList: JSON.stringify(songs), currIndexSong: songIndex});
+                    res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: 'User found', session: storedSession, songList: JSON.stringify(currPlaying), currIndexSong: songIndex});
                 } else {
                     console.log('Username: ' + formUsername);
                     new User({id: formUsername, username: formUsername, password: formPass, is_dj: false}).save();
-                    res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: 'User created. You may login.', session: storedSession, songList: JSON.stringify(songs), currIndexSong: songIndex});
+                    res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: 'User created. You may login.', session: storedSession, songList: JSON.stringify(currPlaying), currIndexSong: songIndex});
                 }
             });
         }
