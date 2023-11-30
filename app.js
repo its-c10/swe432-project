@@ -64,48 +64,50 @@ function setupExpress() {
     app.use(sessions({
         secret: "Z5okaS8bSwN5eLmVXg^zGc&5ApS2pM",
         saveUninitialized: true,
-        cookie: { maxAge: (1000*60*60*24) }, // 1 day
-        resave: false
+        resave: true
     }));
-
-    // use sessions to set current song index.
-    app.get('/', (req, res) => {
-        if(!req.session.currSongIndex) {
-            req.session.currSongIndex = 0;
+ 
+    app.get('/getNextSongIndex', (req,res) => {
+        if(songIndex+1 >= songs.length) {
+            songIndex = 0;
         }else {
-            req.session.currSongIndex = req.currSongIndex;
+            songIndex++;
         }
+        res.send({'songIndex': songIndex});
+    });
+    app.get('/', (req, res) => {
         res.render('pages/index', {
             title: 'Home',
-            session: req.session,
+            session: session,
             songList: JSON.stringify(songs),
+            currIndexSong: songIndex
         });
     });
     app.get('/contact-us', (req, res) => {
         res.render('pages/contact-us', {
             title: 'Contact Us',
-            session: req.session,
+            session: session,
         });
     });
     app.get('/songs', (req, res) => {
         Song.find({}).then((data) => {
-            res.render('pages/songs', {title: 'Songs', songs: data, session: req.session});
+            res.render('pages/songs', {title: 'Songs', songs: data, session: session});
         });
     });
     app.get('/songs/:id', (req, res) => {
         let passedId = req.params.id;
         Song.find({id: passedId}).then((foundSong) => {
-            res.render('pages/i-song', {song: foundSong[0], title: foundSong[0].title, session: req.session,});
+            res.render('pages/i-song', {song: foundSong[0], title: foundSong[0].title, session: session,});
         });
     });
     app.get('/login-sign-up', (req,res) => {
-        if(req.session.userid) {
+        if(session.userid) {
             res.render('pages/index', {
                 title: 'Home',
-                session: req.session,
+                session: session,
             });
         }else {
-            res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: '', session: req.session});
+            res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: '', session: session});
         }
     });
     app.post('/login-sign-up', (req, res) => {
@@ -116,31 +118,31 @@ function setupExpress() {
                 if(foundUser.length == 0) { // No user with username and password (Could just be invalid password)
                     User.find({username: formUsername}).then((foundUser2) => {
                         if(foundUser2.length == 0) { // There is no user with this username
-                            res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: 'No user found', session: req.session});
+                            res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: 'No user found', session: session});
                         }else { // There is a valid user with this username, but they just had the password incorrect.
-                            res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: 'Incorrect password', session: req.session});
+                            res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: 'Incorrect password', session: session});
                         }
                     });
                 }else { // Valid login
-                    session = req.session;
+                    session = session;
                     session.userid = formUsername;
-                    res.render('pages/index', {title: 'Home', session: req.session});
+                    res.render('pages/index', {title: 'Home', session: session});
                 }
             });
         }else if (req.body.sign_up_btn){
             User.find({username: formUsername}).then((foundUser) => {
                 if(foundUser.length != 0) { // User found with this username. Cannot register.
-                    res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: 'User found', session: req.session});
+                    res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: 'User found', session: session});
                 } else {
                     console.log('Username: ' + formUsername);
                     new User({id: formUsername, username: formUsername, password: formPass, is_dj: false}).save();
-                    res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: 'User created. You may login.', session: req.session});
+                    res.render('pages/login-sign-up', {title: 'Login/Sign-Up', feedback: 'User created. You may login.', session: session});
                 }
             });
         }
     });
     app.get('/logout', (req, res) => {
-        req.session.destroy((err) => {
+        session.destroy((err) => {
             if(err) {
                 console.log(err);
             }else {

@@ -10,10 +10,10 @@
         </div>
         <div class="flex-item middle-media" id="middle-media">
             <div>
-                <h2 id="song-title"><%= JSON.parse(songList)[session.currSongIndex].title %></h2>
-                <p id="song-artist"><%= JSON.parse(songList)[session.currSongIndex].artist %></p>
+                <h2 id="song-title"><%= JSON.parse(songList)[currIndexSong].title %></h2>
+                <p id="song-artist"><%= JSON.parse(songList)[currIndexSong].artist %></p>
                 <audio id="audio" onended="changeSong()" controls>
-                    <source id="media-source" src="<%= "media/" + JSON.parse(songList)[session.currSongIndex].title.toLowerCase().split(' ').join('_') + ".mp3" %>">
+                    <source id="media-source" src="<%= "media/" + JSON.parse(songList)[currIndexSong].title.toLowerCase().split(' ').join('_') + ".mp3" %>">
                 </audio>
                 <br><br>
                 <button onClick="toggleLyrics()" style="display: none">Toggle lyrics</button>
@@ -21,7 +21,7 @@
         </div>
         <div class="flex-item">
             <div style="text-align: center;">
-                <img src="<%= "media/" + JSON.parse(songList)[session.currSongIndex].title.toLowerCase().split(' ').join('_') + ".jpg" %>" id="music-pic">
+                <img src="<%= "media/" + JSON.parse(songList)[currIndexSong].title.toLowerCase().split(' ').join('_') + ".jpg" %>" id="music-pic">
             </div>
         </div>
         <div class="share-slider hide-slider">
