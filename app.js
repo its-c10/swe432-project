@@ -17,10 +17,16 @@ setupExpress();
 
 const songs = [
     new Song({id: 1, title: 'A Beautiful Lie', yearReleased: 2005, artist: 'Thirty Seconds to Mars'}),
-    new Song({id: 2, title: 'Break', yearReleased: 2009, artist: 'Three Days Grace'}),
-    new Song({id: 3, title: 'American Idiot', yearReleased: 2004, artist: 'Green Day'}),
-    new Song({id: 4, title: 'Hated You from Hello', yearReleased: 2011, artist: 'Downplay'}),
-    new Song({id: 5, title: 'The Diary of Jane', yearReleased: 2004, artist: 'Breaking Benjamin'}),
+    new Song({id: 2, title: 'Check Yes Juliet', yearReleased: 2007, artist: 'We The Kings'}),
+    new Song({id: 3, title: 'Crawl Back In', yearReleased: 2009, artist: 'Dead By Sunrise'}),
+    new Song({id: 4, title: 'Everything', yearReleased: 2015, artist: 'Bridge to Grace'}),
+    new Song({id: 5, title: 'The Pretender', yearReleased: 2007, artist: 'Foo Fighters'}),
+    new Song({id: 6, title: 'Jesus of Suburbia', yearReleased: 2004, artist: 'Green Day'}),
+    new Song({id: 7, title: 'Over and Over', yearReleased: 2006, artist: 'Three Days Grace'}),
+    new Song({id: 8, title: 'Thats What You Get', yearReleased: 2007, artist: 'Paramore'}),
+    new Song({id: 9, title: 'The Kill', yearReleased: 2005, artist: 'Three Days Grace'}),
+    new Song({id: 10, title: 'I Hate Everything About You', yearReleased: 2003, artist: 'Three Days Grace'}),
+    new Song({id: 11, title: 'Savior', yearReleased: 2005, artist: 'Rise Against'}),
 ];
 
 function setupMongoose() {
@@ -64,6 +70,11 @@ function setupExpress() {
 
     // use sessions to set current song index.
     app.get('/', (req, res) => {
+        if(!req.session.currSongIndex) {
+            req.session.currSongIndex = 0;
+        }else {
+            req.session.currSongIndex = req.currSongIndex;
+        }
         res.render('pages/index', {
             title: 'Home',
             session: req.session,
