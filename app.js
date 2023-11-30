@@ -9,6 +9,7 @@ const Dj = require('./models/dj');
 const User = require('./models/user.js');
 let db = null;
 let session;
+let songIndex = 0;
 
 setupMongoose();
 initSongs();
@@ -61,10 +62,12 @@ function setupExpress() {
         resave: false
     }));
 
+    // use sessions to set current song index.
     app.get('/', (req, res) => {
         res.render('pages/index', {
             title: 'Home',
             session: req.session,
+            songList: JSON.stringify(songs),
         });
     });
     app.get('/contact-us', (req, res) => {

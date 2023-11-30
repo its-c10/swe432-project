@@ -1,3 +1,5 @@
+<div id="song-data" style="display: none"><%= songList %></div> <!-- extra data that is never shown to client -->
+<div id="song-index" style="display: none"><%= currSongIndex %></div>
 <div class="media">
     <div class="flex-container">
         <div class="flex-item">
@@ -9,10 +11,10 @@
         </div>
         <div class="flex-item middle-media" id="middle-media">
             <div>
-                <h2>A Beautiful Lie</h2>
-                <p>Thirsty Seconds to Mars</p>
-                <audio controls>
-                    <source src="media/a beautiful lie.mp3">
+                <h2><%= JSON.parse(songList)[currSongIndex].title %></h2>
+                <p><%= JSON.parse(songList)[currSongIndex].artist %></p>
+                <audio id="audio" onended="changeSong()" controls>
+                    <source id="media-source" src="<%= "media/" + JSON.parse(songList)[currSongIndex].title.toLowerCase().split(' ').join('_') + ".mp3" %>">
                 </audio>
                 <br><br>
                 <button onClick="toggleLyrics()">Toggle lyrics</button>
@@ -20,7 +22,7 @@
         </div>
         <div class="flex-item">
             <div style="text-align: center;">
-                <img src="../media/pic.jpg" id="music-pic">
+                <img src="<%= "media/" + JSON.parse(songList)[currSongIndex].title.toLowerCase().split(' ').join('_') + ".jpg" %>" id="music-pic">
             </div>
         </div>
         <div class="share-slider hide-slider">
